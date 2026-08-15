@@ -1,0 +1,116 @@
+---
+import BaseLayout from '../layouts/BaseLayout.astro';
+import { getAllNotes, categoryCounts, tagCounts, wordCount, updated } from '../lib/notes';
+
+const notes = await getAllNotes();
+const totalWords = notes.reduce((sum, n) => sum + wordCount(n), 0);
+const totalTags = new Set(notes.flatMap((n) => n.data.tags)).size;
+
+const now = new Date();
+const thisMonth = notes.filter((n) => {
+  const d = updated(n);
+  return d.getFullYear() === now.getFullYear() && d.getMonth() === now.getMonth();
+}).length;
+
+const categories = categoryCounts(notes);
+const maxCat = Math.max(1, ...categories.map((c) => c.count));
+const topTags = tagCounts(notes).slice(0, 12);
+const maxTag = Math.max(1, ...topTags.map((t) => t.count));
+
+const statuses = ['seed', 'sprout', 'growing', 'evergreen'];
+const statusLabels: Record<string, string> = {
+  seed: '种子',
+  sprout: '萌芽',
+  growing: '生长中',
+  evergreen: '常青',
+};
+const statusCounts = statuses.map((s) => ({
+  status: s,
+  label: statusLabels[s] ?? s,
+  count: notes.filter((n) => n.data.status === s).length,
+}));
+const maxStatus = Math.max(1, ...statusCounts.map((s) => s.count));
+---
+
+<BaseLayout
+  title="统计 · 个人知识库"
+  description="由构建时从 Markdown 文件自动计算的知识库统计。"
+>
+  <div class="wrap py-10 max-w-3xl">
+    <header class="mb-10">
+      <h1 class="text-2xl font-bold tracking-tight m-0">统计</h1>
+      <p class="text-muted mt-2 m-0">
+        以下每个数字都在构建时直接从 Markdown 文件计算得出。
+      </p>
+    </header>
+
+    <div class="grid gap-4 sm:grid-cols-2 lg:grid-cols-4 mb-12">
+      <div class="surface-card p-5">
+        <p class="font-mono text-2xl m-0 text-accent font-semibold">{notes.length}</p>
+        <p class="text-xs text-subtle uppercase tracking-wider mt-1">笔记总数</p>
+      </div>
+      <div class="surface-card p-5">
+        <p class="font-mono text-2xl m-0 text-accent font-semibold">{totalWords.toLocaleString('zh-CN')}</p>
+        <p class="text-xs text-subtle uppercase tracking-wider mt-1">总字数</p>
+      </div>
+      <div class="surface-card p-5">
+        <p class="font-mono text-2xl m-0 text-accent font-semibold">{totalTags}</p>
+        <p class="text-xs text-subtle uppercase tracking-wider mt-1">标签总数</p>
+      </div>
+      <div class="surface-card p-5">
+        <p class="font-mono text-2xl m-0 text-accent font-semibold">{thisMonth}</p>
+        <p class="text-xs text-subtle uppercase tracking-wider mt-1">本月笔记</p>
+      </div>
+    </div>
+
+    <section class="mb-10">
+      <h2 class="section-title mb-5">按分类</h2>
+      <div>
+        {
+          categories.map((c) => (
+            <div class="stat-row">
+              <span class="stat-label">{c.name}</span>
+              <div class="stat-bar"><span style={`width:${Math.round((c.count / maxCat) * 100)}%`}></span></div>
+              <span class="stat-value">{c.count}</span>
+            </div>
+          ))
+        }
+      </div>
+    </section>
+
+    <section class="mb-10">
+      <h2 class="section-title mb-5">最活跃主题</h2>
+      <div>
+        {
+          topTags.map((t) => (
+            <div class="stat-row">
+              <span class="stat-label">#{t.tag}</span>
+              <div class="stat-bar"><span style={`width:${Math.round((t.count / maxTag) * 100)}%`}></span></div>
+              <span class="stat-value">{t.count}</span>
+            </div>
+          ))
+        }
+      </div>
+    </section>
+
+    <section>
+      <h2 class="section-title mb-5">成熟度</h2>
+      <div>
+        {
+          statusCounts.map((s) => (
+            <div class="stat-row">
+              <span class={`stat-label status-badge status-${s.status}`}>
+                <span class="status-dot" aria-hidden="true"></span>
+                {s.label}
+              </span>
+              <div class="stat-bar">
+                <span style={`width:${Math.round((s.count / maxStatus) * 100)}%;background:var(--st-${s.status})`}></span>
+              </div>
+              <span class="stat-value">{s.count}</span>
+            </div>
+          ))
+        }
+      </div>
+    </section>
+  </div>
+</BaseLayout>

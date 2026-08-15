@@ -1,0 +1,42 @@
+---
+import BaseLayout from '../layouts/BaseLayout.astro';
+import { getGraph } from '../lib/graph';
+
+const { data } = getGraph();
+const stats = { nodes: data.nodes.length, links: data.links.length };
+---
+
+<BaseLayout
+  title="知识图谱 · 个人知识库"
+  description="由笔记之间的 wiki 链接构建的交互式知识图谱。"
+>
+  <div class="wrap py-10">
+    <header class="mb-6">
+      <h1 class="text-2xl font-bold tracking-tight m-0">知识图谱</h1>
+      <p class="text-muted mt-2 m-0">
+        {stats.nodes} 篇笔记 · {stats.links} 条连接，直接由 Markdown 中的{' '}
+        <code class="font-mono text-xs">[[wiki 链接]]</code> 生成。
+        拖拽节点可重新布局，拖动空白处平移，滚动滚轮缩放，点击节点打开对应笔记。
+      </p>
+    </header>
+
+    <div class="graph-stage">
+      <canvas id="graph-canvas" class="graph-canvas" aria-label="交互式知识图谱"></canvas>
+      <div id="graph-tooltip" class="graph-tooltip" role="tooltip"></div>
+      <div class="graph-controls">
+        <button id="graph-zoom-in" class="icon-btn" type="button" aria-label="放大" title="放大">+</button>
+        <button id="graph-zoom-out" class="icon-btn" type="button" aria-label="缩小" title="缩小">−</button>
+        <button id="graph-reset" class="icon-btn" type="button" aria-label="重置视图" title="重置视图">⟲</button>
+      </div>
+    </div>
+
+    <div class="graph-legend" id="graph-legend" aria-label="按分类筛选"></div>
+
+    <section class="graph-fallback md:hidden mt-8">
+      <h2 class="section-title mb-4">全部笔记</h2>
+      <ul id="graph-fallback-list" class="list-none p-0 m-0 grid gap-2 text-sm"></ul>
+    </section>
+  </div>
+
+  <script src="../scripts/graph.ts"></script>
+</BaseLayout>

@@ -1,0 +1,109 @@
+---
+import BaseLayout from '../../layouts/BaseLayout.astro';
+import { getAllNotes, noteSlug, updated, readingTime, allTags } from '../../lib/notes';
+import { SUBCATEGORIES, STATUS_META } from '../../config';
+
+const notes = await getAllNotes();
+const tags = allTags(notes);
+
+const browserNotes = notes.map((n) => ({
+  slug: noteSlug(n),
+  title: n.data.title,
+  description: n.data.description,
+  category: n.data.category,
+  subcategory: n.data.subcategory,
+  tags: n.data.tags,
+  status: n.data.status,
+  statusLabel: (STATUS_META[n.data.status] ?? { label: n.data.status }).label,
+  difficulty: n.data.difficulty,
+  created: n.data.created.toISOString(),
+  updated: updated(n).toISOString(),
+  minutes: readingTime(n),
+}));
+
+const categories = [...new Set(notes.map((n) => n.data.category))].sort();
+---
+
+<BaseLayout
+  title="笔记 · 个人知识库"
+  description="浏览全部笔记——按分类、标签、难度与状态筛选，或搜索标题、描述与标签。"
+>
+  <div class="wrap py-10">
+    <header class="mb-8">
+      <h1 class="text-2xl font-bold tracking-tight m-0">笔记</h1>
+      <p class="text-muted mt-2 m-0">{notes.length} 篇笔记 · {tags.length} 个标签 —— 一座不断生长的数字花园。</p>
+    </header>
+
+    <div class="browser-layout">
+      <aside class="browser-sidebar surface-card p-3" aria-label="分类">
+        <button class="sidebar-category active" data-category="">
+          全部笔记
+          <span class="count">{notes.length}</span>
+        </button>
+        {
+          categories.map((cat) => {
+            const subCounts = (SUBCATEGORIES[cat] ?? [])
+              .map((sub) => ({ sub, count: notes.filter((n) => n.data.subcategory === sub).length }))
+              .filter((s) => s.count > 0);
+            return (
+              <div class="sidebar-group">
+                <button class="sidebar-category" data-category={cat}>
+                  {cat}
+                  <span class="count">{notes.filter((n) => n.data.category === cat).length}</span>
+                </button>
+                {
+                  subCounts.map((s) => (
+                    <button class="sidebar-sub" data-sub={s.sub}>
+                      {s.sub}
+                      <span class="count">{s.count}</span>
+                    </button>
+                  ))
+                }
+              </div>
+            );
+          })
+        }
+      </aside>
+
+      <div class="min-w-0">
+        <div class="filter-bar">
+          <input
+            id="browser-search"
+            class="search-input"
+            type="search"
+            placeholder="筛选笔记…"
+            aria-label="筛选笔记"
+          />
+          <select id="browser-sort" class="select-input" aria-label="排序方式">
+            <option value="updated">排序：最近更新</option>
+            <option value="created">排序：最近创建</option>
+            <option value="title">排序：标题</option>
+          </select>
+          <select id="browser-difficulty" class="select-input" aria-label="难度">
+            <option value="">全部难度</option>
+            <option value="introductory">入门</option>
+            <option value="intermediate">进阶</option>
+            <option value="advanced">高级</option>
+          </select>
+          <select id="browser-status" class="select-input" aria-label="状态">
+            <option value="">全部状态</option>
+            <option value="seed">种子</option>
+            <option value="sprout">萌芽</option>
+            <option value="growing">生长中</option>
+            <option value="evergreen">常青</option>
+          </select>
+        </div>
+
+        <div class="filter-bar" id="browser-tags" aria-label="按标签筛选">
+          {tags.map((t) => <button class="chip" type="button" data-tag={t}>{t}</button>)}
+        </div>
+
+        <p id="browser-count" class="text-xs text-subtle font-mono mb-4 m-0"></p>
+        <div id="browser-list" class="grid gap-4"></div>
+      </div>
+    </div>
+  </div>
+
+  <div id="notes-data-host" data-notes={JSON.stringify(browserNotes)}></div>
+  <script src="../../scripts/browser.ts"></script>
+</BaseLayout>

@@ -1,0 +1,124 @@
+---
+import BaseLayout from '../../layouts/BaseLayout.astro';
+import { getCollection } from 'astro:content';
+import { SITE } from '../../config';
+
+const research = await getCollection('research');
+const publications = research
+  .filter((r) => r.data.type === 'publication')
+  .sort((a, b) => (b.data.year ?? 0) - (a.data.year ?? 0));
+const ideas = research.filter((r) => r.data.type === 'idea');
+const experiments = research.filter((r) => r.data.type === 'experiment');
+
+const EXP_STATUS: Record<string, string> = {
+  completed: '已完成',
+  failed: '失败（负结果）',
+  ongoing: '进行中',
+};
+---
+
+<BaseLayout
+  title="研究 · 个人知识库"
+  description="研究兴趣、论文、想法与实验记录。"
+>
+  <div class="wrap py-10 max-w-4xl">
+    <header class="mb-10">
+      <h1 class="text-2xl font-bold tracking-tight m-0">研究</h1>
+      <p class="text-muted mt-2 m-0">我在思考什么、写什么、尝试什么。</p>
+    </header>
+
+    <section class="mb-12">
+      <h2 class="section-title mb-5">研究兴趣</h2>
+      <div class="flex flex-wrap gap-2">
+        {SITE.interests.map((i) => <span class="chip active" style="cursor: default">{i}</span>)}
+      </div>
+    </section>
+
+    <section class="mb-12">
+      <h2 class="section-title mb-5">论文</h2>
+      {
+        publications.length === 0 ? (
+          <p class="text-muted text-sm">暂无论文。</p>
+        ) : (
+          <ol class="list-none p-0 m-0 grid gap-5">
+            {
+              publications.map((p, i) => (
+                <li class="surface-card p-5 reveal" style={`--i:${i}`}>
+                  <p class="m-0 text-sm text-subtle font-mono">
+                    {p.data.venue ?? '未发表'}{p.data.year ? ' · ' + p.data.year : ''}
+                    {p.data.status ? ' · ' + p.data.status : ''}
+                  </p>
+                  <h3 class="m-0 mt-1.5 text-base font-semibold tracking-tight">
+                    {p.data.title}
+                  </h3>
+                  {p.data.authors.length > 0 && (
+                    <p class="m-0 mt-1 text-sm text-muted">{p.data.authors.join('、')}</p>
+                  )}
+                  {p.data.description && (
+                    <p class="m-0 mt-2 text-sm text-muted">{p.data.description}</p>
+                  )}
+                  <div class="flex gap-2 mt-3 flex-wrap">
+                    {p.data.paper && <a class="btn" href={p.data.paper} target="_blank" rel="noopener">论文</a>}
+                    {p.data.code && <a class="btn" href={p.data.code} target="_blank" rel="noopener">代码</a>}
+                  </div>
+                </li>
+              ))
+            }
+          </ol>
+        )
+      }
+    </section>
+
+    <section class="mb-12">
+      <h2 class="section-title mb-5">研究想法</h2>
+      {
+        ideas.length === 0 ? (
+          <p class="text-muted text-sm">暂无想法记录。</p>
+        ) : (
+          <ol class="list-none p-0 m-0 grid gap-4">
+            {
+              ideas.map((idea, i) => (
+                <li class="flex gap-4 surface-card p-5 reveal" style={`--i:${i}`}>
+                  <span class="font-mono text-accent flex-none pt-0.5">
+                    #{String(i + 1).padStart(3, '0')}
+                  </span>
+                  <div class="min-w-0">
+                    <h3 class="m-0 text-base font-semibold tracking-tight">{idea.data.title}</h3>
+                    {idea.data.description && (
+                      <p class="m-0 mt-1 text-sm text-muted">{idea.data.description}</p>
+                    )}
+                  </div>
+                </li>
+              ))
+            }
+          </ol>
+        )
+      }
+    </section>
+
+    <section>
+      <h2 class="section-title mb-5">实验</h2>
+      {
+        experiments.length === 0 ? (
+          <p class="text-muted text-sm">暂无实验记录。</p>
+        ) : (
+          <div class="grid gap-4 sm:grid-cols-2">
+            {
+              experiments.map((exp, i) => (
+                <article class="surface-card p-5 reveal" style={`--i:${i}`}>
+                  <p class="m-0 text-xs text-subtle font-mono uppercase tracking-wider">
+                    {EXP_STATUS[exp.data.status ?? ''] ?? '实验'}
+                  </p>
+                  <h3 class="m-0 mt-1.5 text-base font-semibold tracking-tight">{exp.data.title}</h3>
+                  {exp.data.description && (
+                    <p class="m-0 mt-2 text-sm text-muted">{exp.data.description}</p>
+                  )}
+                </article>
+              ))
+            }
+          </div>
+        )
+      }
+    </section>
+  </div>
+</BaseLayout>

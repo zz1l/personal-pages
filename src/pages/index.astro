@@ -1,0 +1,111 @@
+---
+import BaseLayout from '../layouts/BaseLayout.astro';
+import NoteCard from '../components/NoteCard.astro';
+import { SITE, CATEGORY_ORDER } from '../config';
+import { getAllNotes, categoryCounts } from '../lib/notes';
+
+const notes = await getAllNotes();
+const recent = notes.slice(0, 8);
+const featured = notes.filter((n) => n.data.featured);
+const counts = categoryCounts(notes);
+
+const ordered = [...counts].sort((a, b) => {
+  const ia = CATEGORY_ORDER.indexOf(a.name);
+  const ib = CATEGORY_ORDER.indexOf(b.name);
+  if (ia !== -1 && ib !== -1) return ia - ib;
+  if (ia !== -1) return -1;
+  if (ib !== -1) return 1;
+  return b.count - a.count;
+});
+
+const base = import.meta.env.BASE_URL;
+const withBase = (p: string) => (base === '/' ? p : base.replace(/\/$/, '') + p);
+---
+
+<BaseLayout>
+  <section class="hero">
+    <div class="hero-grid-bg" aria-hidden="true"></div>
+    <canvas id="hero-canvas" class="hero-canvas" aria-hidden="true"></canvas>
+    <div class="wrap hero-inner">
+      <p class="hero-subtitle">个人知识库</p>
+      <h1 class="hero-name">{SITE.name}</h1>
+      <p class="hero-tagline">{SITE.subtitle} — {SITE.tagline}</p>
+      <div class="flex justify-center gap-3 mt-8">
+        <a class="btn btn-primary" href={withBase('/notes/')}>浏览笔记</a>
+        <a class="btn" href={withBase('/graph/')}>打开图谱</a>
+      </div>
+    </div>
+  </section>
+
+  <div class="wrap">
+    <section class="py-14">
+      <div class="section-head">
+        <h2 class="section-title">知识总览</h2>
+      </div>
+      <div class="grid gap-4 sm:grid-cols-2 lg:grid-cols-3">
+        {
+          ordered.map((c, i) => (
+            <a
+              class="overview-card reveal"
+              style={`--i:${i}`}
+              href={withBase('/notes/?category=' + encodeURIComponent(c.name))}
+            >
+              <span class="overview-count">{c.count}</span>
+              <span class="overview-name">{c.name}</span>
+              <span class="text-xs text-subtle font-mono">
+                {c.subcategories.slice(0, 4).map((s) => `${s.name} ${s.count}`).join(' · ')}
+              </span>
+            </a>
+          ))
+        }
+      </div>
+    </section>
+
+    <section class="py-10">
+      <div class="section-head">
+        <h2 class="section-title">最近笔记</h2>
+        <a class="section-link" href={withBase('/notes/')}>浏览全部 →</a>
+      </div>
+      <div class="grid gap-4 md:grid-cols-2">
+        {
+          recent.map((note, i) => (
+            <div class="reveal" style={`--i:${i}`}>
+              <NoteCard note={note} />
+            </div>
+          ))
+        }
+      </div>
+    </section>
+
+    <div class="grid gap-12 lg:grid-cols-2 py-12">
+      <section>
+        <h2 class="section-title mb-5">精选笔记</h2>
+        <div class="grid gap-4">
+          {
+            featured.length > 0 ? (
+              featured.map((note) => <NoteCard note={note} />)
+            ) : (
+              <p class="text-muted text-sm">
+                还没有精选笔记——在笔记的 frontmatter 里设置 <code class="font-mono text-xs">featured: true</code> 即可。
+              </p>
+            )
+          }
+        </div>
+      </section>
+
+      <section>
+        <h2 class="section-title mb-5">当前兴趣</h2>
+        <div class="surface-card p-6 grid gap-3">
+          {
+            SITE.interests.map((interest) => (
+              <p class="flex items-center gap-3 m-0 text-muted">
+                <span class="status-dot flex-none" style="background: var(--accent)" aria-hidden="true"></span>
+                {interest}
+              </p>
+            ))
+          }
+        </div>
+      </section>
+    </div>
+  </div>
+</BaseLayout>

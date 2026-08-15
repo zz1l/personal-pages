@@ -1,0 +1,33 @@
+---
+import type { RelatedNote } from '../lib/graph';
+
+interface Props {
+  notes: RelatedNote[];
+}
+
+const { notes } = Astro.props;
+const base = import.meta.env.BASE_URL;
+const withBase = (p: string) => (base === '/' ? p : base.replace(/\/$/, '') + p);
+---
+
+{
+  notes.length > 0 && (
+    <section class="related" aria-label="相关笔记">
+      <h2 class="text-sm font-semibold tracking-wide uppercase text-subtle mb-4">相关笔记</h2>
+      <ul class="list-none p-0 m-0 grid gap-2">
+        {
+          notes.map((n) => (
+            <li>
+              <a class="flex items-baseline gap-3 py-1 group" href={withBase('/notes/' + n.slug + '/')}>
+                <span class="text-xs text-subtle font-mono flex-none">{n.category}</span>
+                <span class="text-sm text-fg group-hover:text-accent transition-colors">
+                  {n.title}
+                </span>
+              </a>
+            </li>
+          ))
+        }
+      </ul>
+    </section>
+  )
+}

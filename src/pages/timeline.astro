@@ -1,0 +1,81 @@
+---
+import BaseLayout from '../layouts/BaseLayout.astro';
+import { getAllNotes, noteSlug, updated } from '../lib/notes';
+import { MONTH_ZH } from '../lib/format';
+import type { Note } from '../lib/notes';
+
+const notes = await getAllNotes();
+
+// 按 年份 → 月份（最近更新）分组，最新在前
+const byYear = new Map<number, Map<number, Note[]>>();
+for (const note of notes) {
+  const d = updated(note);
+  let months = byYear.get(d.getFullYear());
+  if (!months) {
+    months = new Map();
+    byYear.set(d.getFullYear(), months);
+  }
+  const list = months.get(d.getMonth()) ?? [];
+  list.push(note);
+  months.set(d.getMonth(), list);
+}
+
+const years = [...byYear.keys()].sort((a, b) => b - a);
+const base = import.meta.env.BASE_URL;
+const withBase = (p: string) => (base === '/' ? p : base.replace(/\/$/, '') + p);
+---
+
+<BaseLayout
+  title="时间线 · 个人知识库"
+  description="按创建或最近更新时间组织的笔记时间线。"
+>
+  <div class="wrap py-10 max-w-3xl">
+    <header class="mb-10">
+      <h1 class="text-2xl font-bold tracking-tight m-0">时间线</h1>
+      <p class="text-muted mt-2 m-0">
+        {notes.length} 篇笔记，按最近更新时间分组。
+      </p>
+    </header>
+
+    {
+      years.length === 0 ? (
+        <div class="empty-state">还没有笔记。</div>
+      ) : (
+        <div class="timeline">
+          {
+            years.map((year) => {
+              const months = [...(byYear.get(year)?.keys() ?? [])].sort((a, b) => b - a);
+              return (
+                <>
+                  <h2 class="timeline-year">{year} 年</h2>
+                  {
+                    months.map((month) => (
+                      <>
+                        <h3 class="timeline-month">{MONTH_ZH[month]} {year}</h3>
+                        {
+                          (byYear.get(year)?.get(month) ?? []).map((note) => (
+                            <div class="timeline-item">
+                              <time datetime={updated(note).toISOString()}>
+                                {MONTH_ZH[month]} {String(updated(note).getDate()).padStart(2, '0')} 日
+                              </time>
+                              <a href={withBase('/notes/' + noteSlug(note) + '/')}>
+                                {note.data.title}
+                              </a>
+                              <span class="timeline-category font-mono">
+                                {note.data.category}
+                              </span>
+                            </div>
+                          ))
+                        }
+                      </>
+                    ))
+                  }
+                </>
+              );
+            })
+          }
+        </div>
+      )
+    }
+  </div>
+</BaseLayout>

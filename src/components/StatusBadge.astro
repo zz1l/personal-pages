@@ -1,0 +1,15 @@
+---
+import { STATUS_META } from '../config';
+
+interface Props {
+  status: string;
+}
+
+const { status } = Astro.props;
+const meta = STATUS_META[status] ?? { label: status, hint: '' };
+---
+
+<span class="status-badge status-{status}" title={meta.hint}>
+  <span class="status-dot" aria-hidden="true"></span>
+  {meta.label}
+</span>

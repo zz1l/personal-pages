@@ -1,0 +1,63 @@
+---
+import BaseLayout from '../../layouts/BaseLayout.astro';
+import { getCollection } from 'astro:content';
+
+const projects = (await getCollection('projects')).sort((a, b) => {
+  if (b.data.featured !== a.data.featured) return b.data.featured ? 1 : -1;
+  return (b.data.year ?? 0) - (a.data.year ?? 0);
+});
+
+const STATUS_LABELS: Record<string, string> = {
+  active: '进行中',
+  maintained: '维护中',
+  archived: '已归档',
+  idea: '构想',
+};
+---
+
+<BaseLayout
+  title="项目 · 个人知识库"
+  description="个人项目——研究代码、工具与实验。"
+>
+  <div class="wrap py-10">
+    <header class="mb-8">
+      <h1 class="text-2xl font-bold tracking-tight m-0">项目</h1>
+      <p class="text-muted mt-2 m-0">
+        {projects.length} 个项目——代码、工具与实验。
+      </p>
+    </header>
+
+    <div class="grid gap-5">
+      {
+        projects.map((p, i) => (
+          <article class="surface-card p-6 reveal" style={`--i:${i}`}>
+            <div class="flex items-start justify-between gap-4 flex-wrap">
+              <div>
+                <h2 class="text-lg font-semibold m-0 tracking-tight">
+                  {p.data.title}
+                </h2>
+                <p class="text-sm text-subtle font-mono mt-1">
+                  {p.data.year ? String(p.data.year) + ' · ' : ''}
+                  {STATUS_LABELS[p.data.status] ?? p.data.status}
+                </p>
+              </div>
+              <div class="flex gap-2 flex-wrap">
+                {p.data.paper && <a class="btn" href={p.data.paper} target="_blank" rel="noopener">论文</a>}
+                {p.data.github && <a class="btn" href={p.data.github} target="_blank" rel="noopener">GitHub</a>}
+                {p.data.demo && <a class="btn btn-primary" href={p.data.demo} target="_blank" rel="noopener">演示</a>}
+              </div>
+            </div>
+            <p class="text-muted m-0 mt-3 max-w-3xl">{p.data.description}</p>
+            {
+              p.data.tech.length > 0 && (
+                <div class="flex flex-wrap gap-2 mt-4">
+                  {p.data.tech.map((t) => <span class="text-xs text-accent font-mono border border-border rounded-full px-2.5 py-0.5">{t}</span>)}
+                </div>
+              )
+            }
+          </article>
+        ))
+      }
+    </div>
+  </div>
+</BaseLayout>
