@@ -1,4 +1,4 @@
----
+﻿---
 title: "注意力机制"
 description: "缩放点积注意力、softmax 瓶颈视角，以及为什么注意力是可微的键值查找。"
 category: "AI"
@@ -7,7 +7,6 @@ tags:
   - NLP
   - 注意力
   - 深度学习
-status: "growing"
 difficulty: "advanced"
 created: 2025-06-14
 updated: 2026-01-18

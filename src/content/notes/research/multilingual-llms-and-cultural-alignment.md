@@ -1,4 +1,4 @@
----
+﻿---
 title: "多语言大模型与文化对齐"
 description: "研究笔记：语言如何调节多语言大模型中与价值观相关的行为，以及为什么需要语言层面的对齐分析。"
 category: "研究"
@@ -8,7 +8,6 @@ tags:
   - 多语言
   - 文化对齐
   - 研究
-status: "seed"
 difficulty: "advanced"
 created: 2025-11-20
 updated: 2026-01-02

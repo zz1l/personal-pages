@@ -4,7 +4,6 @@ import type { Note } from '../lib/notes';
 import { noteSlug, updated, readingTime } from '../lib/notes';
 import { formatDateLong } from '../lib/format';
 import { DIFFICULTY_LABELS } from '../config';
-import StatusBadge from '../components/StatusBadge.astro';
 import RelatedNotes from '../components/RelatedNotes.astro';
 import { relatedNotes, backlinks } from '../lib/graph';
 
@@ -64,7 +63,6 @@ const categoryLabel = note.data.subcategory
         <header class="article-header">
           <h1>{note.data.title}</h1>
           <div class="prose-note-badge-row">
-            <StatusBadge status={note.data.status} />
             <span class="difficulty-badge">{DIFFICULTY_LABELS[note.data.difficulty]}</span>
           </div>
           <p class="article-meta">

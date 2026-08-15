@@ -11,8 +11,6 @@ interface BrowserNote {
   category: string;
   subcategory?: string;
   tags: string[];
-  status: string;
-  statusLabel: string;
   difficulty: string;
   created: string;
   updated: string;
@@ -31,7 +29,6 @@ function init(notes: BrowserNote[]) {
   const search = document.getElementById('browser-search') as HTMLInputElement | null;
   const sortEl = document.getElementById('browser-sort') as HTMLSelectElement | null;
   const diffEl = document.getElementById('browser-difficulty') as HTMLSelectElement | null;
-  const statusEl = document.getElementById('browser-status') as HTMLSelectElement | null;
   const tagRow = document.getElementById('browser-tags');
 
   const params = new URLSearchParams(window.location.search);
@@ -42,7 +39,6 @@ function init(notes: BrowserNote[]) {
     tag: params.get('tag') ?? '',
     sort: params.get('sort') ?? 'updated',
     difficulty: params.get('difficulty') ?? '',
-    status: params.get('status') ?? '',
   };
 
   if (search) {
@@ -58,7 +54,6 @@ function init(notes: BrowserNote[]) {
   }
   sortEl?.addEventListener('change', () => ((state.sort = sortEl.value), render()));
   diffEl?.addEventListener('change', () => ((state.difficulty = diffEl.value), render()));
-  statusEl?.addEventListener('change', () => ((state.status = statusEl.value), render()));
 
   // tag chips (single-select toggle)
   if (tagRow) {
@@ -95,7 +90,6 @@ function init(notes: BrowserNote[]) {
     if (state.subcategory && n.subcategory !== state.subcategory) return false;
     if (state.tag && !n.tags.includes(state.tag)) return false;
     if (state.difficulty && n.difficulty !== state.difficulty) return false;
-    if (state.status && n.status !== state.status) return false;
     if (state.q) {
       const hay = (n.title + ' ' + n.description + ' ' + n.tags.join(' ') + ' ' + n.category).toLowerCase();
       if (!hay.includes(state.q.toLowerCase())) return false;
@@ -140,11 +134,7 @@ function init(notes: BrowserNote[]) {
     const cat = document.createElement('span');
     cat.className = 'text-xs text-subtle font-mono';
     cat.textContent = n.subcategory ? n.category + ' · ' + n.subcategory : n.category;
-    const badge = document.createElement('span');
-    badge.className = 'status-badge status-' + n.status;
-    badge.innerHTML = '<span class="status-dot" aria-hidden="true"></span>' + n.statusLabel;
     top.appendChild(cat);
-    top.appendChild(badge);
 
     const title = document.createElement('h3');
     title.className = 'note-card-title';

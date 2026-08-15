@@ -1,4 +1,4 @@
-# 知识库 · 部署在 GitHub Pages 上的数字花园
+# 个人知识库 · 部署在 GitHub Pages
 
 基于 **Astro 5 + TypeScript + Tailwind CSS 4** 的个人知识库。笔记就是纯
 Markdown 文件——站点在构建时自动从它们生成笔记浏览器、搜索索引、知识图谱、
@@ -25,7 +25,7 @@ npm run dev          # 开发服务器 http://localhost:4321
 - **知识图谱**（`/graph`）：由 wiki 链接构建的力导向画布——拖拽节点、平移、
   滚轮/双指缩放、悬停提示、点击打开、按分类筛选、移动端列表降级。
 - **笔记浏览器**（`/notes`）：分类/子分类侧边栏、标签筛选、即时文本过滤、
-  按更新/创建/标题排序、难度与状态筛选，支持 URL 参数深链
+  按更新/创建/标题排序、难度筛选，支持 URL 参数深链
   （`?category=AI&tag=...`）。
 - **搜索 / 命令面板**：`Ctrl+K` / `Cmd+K` —— 在标题、描述、标签、分类与全文
   上模糊搜索（Fuse.js，按需加载），另有页面命令与深色模式切换，完整键盘导航。
@@ -86,7 +86,6 @@ description: "显示在卡片与搜索结果中的一句话摘要。"
 category: "数学"            # 任意字符串；新分类会自动出现
 subcategory: "逻辑"          # 可选
 tags: [逻辑, 数理逻辑]       # 可选
-status: growing              # seed | sprout | growing | evergreen
 difficulty: advanced         # introductory | intermediate | advanced
 created: 2026-08-15          # YYYY-MM-DD
 updated: 2026-08-15          # 可选（默认取 created）

@@ -39,7 +39,7 @@ const stage = document.querySelector<HTMLElement>('.graph-stage');
 const canvas = document.getElementById('graph-canvas') as HTMLCanvasElement | null;
 if (stage && canvas) init(stage, canvas);
 
-const CATEGORY_VARS = ['--accent', '--st-note', '--st-imp', '--st-warn', '--st-sprout', '--st-growing'];
+const CATEGORY_VARS = ['--accent', '--st-note', '--st-imp', '--st-warn', '--st-tip', '--st-danger'];
 
 function init(stage: HTMLElement, canvas: HTMLCanvasElement) {
   const ctx = canvas.getContext('2d');

@@ -1,4 +1,4 @@
----
+﻿---
 title: "大语言模型"
 description: "LLM 是什么、缩放律如何运作，以及实践图景：预训练、对齐与推理。"
 category: "AI"
@@ -7,7 +7,6 @@ tags:
   - 大模型
   - 缩放律
   - 对齐
-status: "growing"
 difficulty: "intermediate"
 created: 2025-07-09
 updated: 2026-01-05

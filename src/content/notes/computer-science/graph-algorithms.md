@@ -1,4 +1,4 @@
----
+﻿---
 title: "图算法"
 description: "遍历、最短路与最小生成树——核心图算法及其适用场景。"
 category: "计算机科学"
@@ -7,7 +7,6 @@ tags:
   - 算法
   - 图论
   - 最短路
-status: "growing"
 difficulty: "intermediate"
 created: 2025-08-19
 updated: 2025-12-22

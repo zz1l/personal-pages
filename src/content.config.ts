@@ -15,7 +15,6 @@ const notes = defineCollection({
     category: z.string(),
     subcategory: z.string().optional(),
     tags: z.array(z.string()).default([]),
-    status: z.enum(['seed', 'sprout', 'growing', 'evergreen']).default('seed'),
     difficulty: z.enum(['introductory', 'intermediate', 'advanced']).default('intermediate'),
     created: z.coerce.date(),
     updated: z.coerce.date().optional(),

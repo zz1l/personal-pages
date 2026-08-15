@@ -1,4 +1,4 @@
----
+﻿---
 title: "概率论中的测度论"
 description: "为什么概率论需要测度论：概率空间、σ-代数与可数可加性的病态之处。"
 category: "数学"
@@ -7,7 +7,6 @@ tags:
   - 概率论
   - 测度论
   - 分析
-status: "growing"
 difficulty: "advanced"
 created: 2025-11-02
 updated: 2025-12-18

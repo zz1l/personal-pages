@@ -35,10 +35,6 @@
   --color-st-warn: var(--st-warn);
   --color-st-imp: var(--st-imp);
   --color-st-danger: var(--st-danger);
-  --color-st-seed: var(--st-seed);
-  --color-st-sprout: var(--st-sprout);
-  --color-st-growing: var(--st-growing);
-  --color-st-evergreen: var(--st-evergreen);
 }
 
 /* ---------------------------------------------------------------------------
@@ -70,10 +66,6 @@
   --st-warn: #b45309;
   --st-imp: #7c3aed;
   --st-danger: #dc2626;
-  --st-seed: #8a8f94;
-  --st-sprout: #65a30d;
-  --st-growing: #0e7490;
-  --st-evergreen: #059669;
 
   --shadow-sm: 0 1px 2px rgba(24, 26, 28, 0.05);
   --shadow-md: 0 2px 6px rgba(24, 26, 28, 0.05), 0 10px 28px rgba(24, 26, 28, 0.06);
@@ -112,10 +104,6 @@
   --st-warn: #fbbf24;
   --st-imp: #a78bfa;
   --st-danger: #f87171;
-  --st-seed: #6f6e68;
-  --st-sprout: #a3e635;
-  --st-growing: #38bdf8;
-  --st-evergreen: #34d399;
 
   --shadow-sm: 0 1px 2px rgba(0, 0, 0, 0.4);
   --shadow-md: 0 2px 6px rgba(0, 0, 0, 0.4), 0 10px 28px rgba(0, 0, 0, 0.45);
@@ -448,29 +436,14 @@
   opacity: 0.75;
 }
 
-/* status badges (digital garden maturity) */
-.status-badge {
-  display: inline-flex;
-  align-items: center;
-  gap: 0.4rem;
-  font-size: 0.72rem;
-  font-weight: 600;
-  letter-spacing: 0.04em;
-  text-transform: uppercase;
-  color: var(--subtle);
-}
-
+/* 小圆点（图谱图例、兴趣列表等） */
 .status-dot {
   width: 7px;
   height: 7px;
   border-radius: 50%;
-  background: var(--st-seed);
+  background: var(--accent);
+  display: inline-block;
 }
-
-.status-seed .status-dot { background: var(--st-seed); }
-.status-sprout .status-dot { background: var(--st-sprout); }
-.status-growing .status-dot { background: var(--st-growing); }
-.status-evergreen .status-dot { background: var(--st-evergreen); }
 
 .difficulty-badge {
   font-size: 0.72rem;

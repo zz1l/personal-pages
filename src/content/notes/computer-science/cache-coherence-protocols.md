@@ -1,4 +1,4 @@
----
+﻿---
 title: "缓存一致性协议"
 description: "多核机器如何保持缓存一致：失效与更新、MSI/MESI 状态、目录与侦听。"
 category: "计算机科学"
@@ -7,7 +7,6 @@ tags:
   - 系统
   - 体系结构
   - 并行
-status: "seed"
 difficulty: "advanced"
 created: 2025-12-01
 updated: 2025-12-15

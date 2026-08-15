@@ -1,4 +1,4 @@
----
+﻿---
 title: "Transformer 架构"
 description: "Transformer 架构全貌：自注意力、位置编码、层结构，以及它为什么取代了循环网络。"
 category: "AI"
@@ -7,7 +7,6 @@ tags:
   - Transformer
   - 深度学习
   - NLP
-status: "evergreen"
 difficulty: "advanced"
 created: 2025-06-28
 updated: 2026-01-22

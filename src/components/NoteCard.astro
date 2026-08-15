@@ -2,7 +2,6 @@
 import type { Note } from '../lib/notes';
 import { noteSlug, updated, readingTime } from '../lib/notes';
 import { formatDate } from '../lib/format';
-import StatusBadge from './StatusBadge.astro';
 
 interface Props {
   note: Note;
@@ -19,7 +18,6 @@ const category = note.data.subcategory
 <a class="note-card" href={href}>
   <div class="flex items-center justify-between gap-3">
     <span class="text-xs text-subtle font-mono">{category}</span>
-    <StatusBadge status={note.data.status} />
   </div>
   <h3 class="note-card-title">{note.data.title}</h3>
   {

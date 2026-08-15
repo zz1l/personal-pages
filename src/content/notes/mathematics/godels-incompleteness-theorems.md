@@ -1,4 +1,4 @@
----
+﻿---
 title: "哥德尔不完备定理"
 description: "不完备定理的陈述、证明策略（算术化、不动点引理）与哲学后果。"
 category: "数学"
@@ -7,7 +7,6 @@ tags:
   - 逻辑
   - 不完备性
   - 算术
-status: "growing"
 difficulty: "advanced"
 created: 2025-10-21
 updated: 2026-01-08

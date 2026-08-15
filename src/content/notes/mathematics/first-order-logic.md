@@ -1,4 +1,4 @@
----
+﻿---
 title: "一阶逻辑"
 description: "一阶逻辑的语法、语义与关键元定理——现代数学的通用语言。"
 category: "数学"
@@ -7,7 +7,6 @@ tags:
   - 逻辑
   - 数理逻辑
   - 模型论
-status: "evergreen"
 difficulty: "advanced"
 created: 2025-09-12
 updated: 2026-01-14

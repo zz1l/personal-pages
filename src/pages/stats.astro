@@ -16,20 +16,6 @@ const categories = categoryCounts(notes);
 const maxCat = Math.max(1, ...categories.map((c) => c.count));
 const topTags = tagCounts(notes).slice(0, 12);
 const maxTag = Math.max(1, ...topTags.map((t) => t.count));
-
-const statuses = ['seed', 'sprout', 'growing', 'evergreen'];
-const statusLabels: Record<string, string> = {
-  seed: '种子',
-  sprout: '萌芽',
-  growing: '生长中',
-  evergreen: '常青',
-};
-const statusCounts = statuses.map((s) => ({
-  status: s,
-  label: statusLabels[s] ?? s,
-  count: notes.filter((n) => n.data.status === s).length,
-}));
-const maxStatus = Math.max(1, ...statusCounts.map((s) => s.count));
 ---
 
 <BaseLayout
@@ -87,26 +73,6 @@ const maxStatus = Math.max(1, ...statusCounts.map((s) => s.count));
               <span class="stat-label">#{t.tag}</span>
               <div class="stat-bar"><span style={`width:${Math.round((t.count / maxTag) * 100)}%`}></span></div>
               <span class="stat-value">{t.count}</span>
-            </div>
-          ))
-        }
-      </div>
-    </section>
-
-    <section>
-      <h2 class="section-title mb-5">成熟度</h2>
-      <div>
-        {
-          statusCounts.map((s) => (
-            <div class="stat-row">
-              <span class={`stat-label status-badge status-${s.status}`}>
-                <span class="status-dot" aria-hidden="true"></span>
-                {s.label}
-              </span>
-              <div class="stat-bar">
-                <span style={`width:${Math.round((s.count / maxStatus) * 100)}%;background:var(--st-${s.status})`}></span>
-              </div>
-              <span class="stat-value">{s.count}</span>
             </div>
           ))
         }

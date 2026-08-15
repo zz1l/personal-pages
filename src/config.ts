@@ -35,14 +35,7 @@ export const SUBCATEGORIES: Record<string, string[]> = {
   研究: ['论文', '实验', '想法', '阅读笔记'],
 };
 
-/** 笔记的「数字花园」成熟度。 */
-export const STATUS_META: Record<string, { label: string; hint: string }> = {
-  seed: { label: '种子', hint: '一篇非常早期的笔记——粗略、不完整、探索性的。' },
-  sprout: { label: '萌芽', hint: '正在成形，但仍是碎片。' },
-  growing: { label: '生长中', hint: '正在积极发展与修订。' },
-  evergreen: { label: '常青', hint: '成熟且相对稳定。' },
-};
-
+/** 笔记难度标签。 */
 export const DIFFICULTY_LABELS: Record<string, string> = {
   introductory: '入门',
   intermediate: '进阶',

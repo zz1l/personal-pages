@@ -1,4 +1,4 @@
----
+﻿---
 title: "动态规划"
 description: "动态规划配方：最优子结构、重叠子问题，以及把递推式变成表格。附 Python 实例。"
 category: "计算机科学"
@@ -7,7 +7,6 @@ tags:
   - 算法
   - 动态规划
   - 复杂性
-status: "evergreen"
 difficulty: "intermediate"
 created: 2025-08-05
 updated: 2026-01-10

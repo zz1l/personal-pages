@@ -1,7 +1,7 @@
 ---
 import BaseLayout from '../../layouts/BaseLayout.astro';
 import { getAllNotes, noteSlug, updated, readingTime, allTags } from '../../lib/notes';
-import { SUBCATEGORIES, STATUS_META } from '../../config';
+import { SUBCATEGORIES } from '../../config';
 
 const notes = await getAllNotes();
 const tags = allTags(notes);
@@ -13,8 +13,6 @@ const browserNotes = notes.map((n) => ({
   category: n.data.category,
   subcategory: n.data.subcategory,
   tags: n.data.tags,
-  status: n.data.status,
-  statusLabel: (STATUS_META[n.data.status] ?? { label: n.data.status }).label,
   difficulty: n.data.difficulty,
   created: n.data.created.toISOString(),
   updated: updated(n).toISOString(),
@@ -84,13 +82,6 @@ const categories = [...new Set(notes.map((n) => n.data.category))].sort();
             <option value="introductory">入门</option>
             <option value="intermediate">进阶</option>
             <option value="advanced">高级</option>
-          </select>
-          <select id="browser-status" class="select-input" aria-label="状态">
-            <option value="">全部状态</option>
-            <option value="seed">种子</option>
-            <option value="sprout">萌芽</option>
-            <option value="growing">生长中</option>
-            <option value="evergreen">常青</option>
           </select>
         </div>
 
