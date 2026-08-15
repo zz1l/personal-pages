@@ -1,16 +1,17 @@
-﻿---
+---
 title: "哥德尔完备性定理"
 description: "关于一阶逻辑完备性定理的笔记：亨金构造的证明思路及其推论。"
 category: "数学"
 subcategory: "逻辑"
 tags:
+
   - 逻辑
   - 数理逻辑
   - 模型论
-difficulty: "advanced"
-created: 2025-10-03
-updated: 2026-01-20
-featured: true
+    difficulty: "advanced"
+    created: 2025-10-03
+    updated: 2026-01-20
+    featured: true
 ---
 
 # 哥德尔完备性定理
