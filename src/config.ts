@@ -18,7 +18,7 @@ export const SITE = {
     '多语言 NLP',
   ],
   social: {
-    github: 'https://github.com/your-username',
+    github: 'https://github.com/zz1l',
     email: 'mailto:you@example.com',
     rss: '/rss.xml',
   },
