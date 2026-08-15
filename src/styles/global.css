@@ -989,6 +989,12 @@
   overflow: hidden;
 }
 
+/* 关键：未通过 showModal() 打开时，对话框必须完全隐藏。
+   （.palette 的 display:flex 会覆盖浏览器默认的 dialog:not([open]) 隐藏规则） */
+dialog.palette:not([open]) {
+  display: none;
+}
+
 .palette::backdrop {
   background: rgba(10, 12, 14, 0.45);
   -webkit-backdrop-filter: blur(3px);
