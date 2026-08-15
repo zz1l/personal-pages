@@ -19,7 +19,7 @@ export const SITE = {
   ],
   social: {
     github: 'https://github.com/zz1l',
-    email: 'mailto:you@example.com',
+    email: 'mailto:2809628378@qq.com',
     rss: '/rss.xml',
   },
 };
